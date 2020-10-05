@@ -10,7 +10,7 @@
 
 struct freq_str {
     int isEmpty;
-    char * data;
+    char* data;
     int count;
     struct freq_str * next;
 };
@@ -43,59 +43,48 @@ void freq_str_destroy(freq_str_t* freq) {
  * @retval 0 Success.
  */
 int freq_str_add(freq_str_t* freq, const char* str) {
-    //(void)freq; // Silence compiler warning
-    //(void)str; // Silence compiler warning
-    puts("in add");
+   
     if (freq->isEmpty == 1)
-    {
-        //freq = (freq_str_t*)calloc(1,sizeof(freq_str_t));
-        puts("if");
-        /*freq_str_t* temp = (freq_str_t*)calloc(1,sizeof(freq_str_t));
-        
-        //puts("after first malloc");
-        temp->isEmpty = 0;
-        temp->data = calloc(1,sizeof(str) + 1);
-        puts("before copy");
-        strcpy(temp->data,str);
-        puts("after copy");
-        temp->count = 1;
-        temp->next = NULL;
-        puts("before *");
-        //memcpy(freq, temp, sizeof(freq_str_t));
-        freq = temp;
-        puts("after creating");
-        */
+    {        
         freq->isEmpty = 0;
         freq->data  = calloc(1,sizeof(str) + 1);
         strcpy(freq->data,str);
         freq->count = 1;
         freq->next = NULL;
 
-        puts(freq->data);
-        printf("%d\n",freq->count);
         return 0;
     }
     else 
-    {
-        puts("I'm in else");
-        freq_str_t * p = freq;
-        while(p->next != NULL)
+    {        
+        freq_str_t* p = freq;
+        while(p != NULL)
         {
-            if (p->data == str)
+            
+            if (strcmp(p->data,str) == 0)
             {
                 p->count++;
+                
                 return 0;
             }
-
-            p = p->next;
+            
+            if(p->next != NULL)
+            {
+                p = p->next;
+            }
+            else 
+            {
+                break;
+            }
+            
         }
 
-        freq_str_t * temp = (freq_str_t*)malloc(sizeof(freq_str_t));
+        freq_str_t* temp = (freq_str_t*)malloc(sizeof(freq_str_t));
         temp->data = malloc(sizeof(str) + 1);
         strcpy((temp->data),str);
         temp->count = 1;
         temp->next = NULL;
         p->next = temp;
+        
         return 0;
     }
     
@@ -109,13 +98,11 @@ int freq_str_add(freq_str_t* freq, const char* str) {
  * @return Number of occurences.
  */
 int freq_str_get(freq_str_t* freq, const char* str) {
-    (void)freq; // Silence compiler warning
-    (void)str; // Silence compiler warning
-
-    freq_str_t * p = freq;
-    while(p->next != NULL)
+    
+    freq_str_t* p = freq;
+    while(p != NULL)
     {
-        if (p->data == str)
+        if (strcmp(p->data,str) == 0)
         {            
             return p->count;
         }
@@ -123,12 +110,5 @@ int freq_str_get(freq_str_t* freq, const char* str) {
         p = p->next;
     }
 
-    return -1;
+    return 0;
 }
-
-/*int main()
-{
-    freq_str_t * head = freq_str_create();
-    int res =  freq_str_add(head,"Hello");
-    return res;
-}*/
